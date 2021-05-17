@@ -1,0 +1,19 @@
+{
+  "name": "whatsapp-desktop",
+  "version": "1.0.0",
+  "description": "A Whatsapp web app using electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon --watch . --exec 'electron . --debug'"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "Whatsapp"
+  ],
+  "author": "Swaroop Bhat",
+  "devDependencies": {
+    "electron": "^12.0.7"
+  }
+}

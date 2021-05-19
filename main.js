@@ -1,6 +1,6 @@
 const {app, BrowserWindow, Menu, globalShortcut, remote} = require('electron')
 const path = require('path')
-
+const user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.80 Safari/537.36';
 let mainWindow
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -12,11 +12,17 @@ function createWindow () {
       enableRemoteModule: true
     }
   })
-  const user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.80 Safari/537.36';
   mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
+  //mainWindow.webContents.openDevTools()
 
-   //mainWindow.webContents.openDevTools()
-   mainWindow.once('ready-to-show', () => {mainWindow.show()})
+  mainWindow.once('ready-to-show',() => {
+   mainWindow.webContents.session.clearStorageData({storages: ["serviceworkers"]}).then( async ()=>{
+     //console.log("inside")
+     await mainWindow.webContents.reload()
+     mainWindow.show()
+   })
+ })
+ mainWindow.show()
 }
 
 let flag = true;
@@ -61,7 +67,9 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
-
+app.on('quit',()=>{
+  mainWindow = null
+})
 app.on('activate', function () {
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })

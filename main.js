@@ -1,7 +1,8 @@
 const {app, BrowserWindow, Menu, globalShortcut, remote} = require('electron')
 const path = require('path')
-const user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.80 Safari/537.36';
 let mainWindow
+let packageInfo = require('./package.json')
+//onsole.log(packageInfo)
 function createWindow () {
   mainWindow = new BrowserWindow({
     show: false,
@@ -12,6 +13,9 @@ function createWindow () {
       enableRemoteModule: true
     }
   })
+  const user_agent = mainWindow.webContents.session.getUserAgent().replace(`whatsapp-desktop/${packageInfo.version} `,"").replace(`Electron/${packageInfo.devDependencies.electron} `,"")
+  
+  console.log(user_agent)
   mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
   //mainWindow.webContents.openDevTools()
 

@@ -6,6 +6,9 @@ let packageInfo = require('./package.json')
 function createWindow () {
   mainWindow = new BrowserWindow({
     show: false,
+    icon: path.join(__dirname,'assets/icons/64x64.png'),
+    width: 900,
+    height: 800,
     darkTheme: true,
     //frame:false,
     webPreferences: {
@@ -13,8 +16,8 @@ function createWindow () {
       enableRemoteModule: true
     }
   })
-  const user_agent = mainWindow.webContents.session.getUserAgent().replace(`whatsapp-desktop/${packageInfo.version} `,"").replace(`Electron/${packageInfo.devDependencies.electron} `,"")
-  
+  const user_agent = mainWindow.webContents.session.getUserAgent().replace(`WhatsAppDesktop/${packageInfo.version} `,"").replace(`Electron/${packageInfo.devDependencies.electron} `,"")
+  app.userAgentFallback = user_agent
   console.log(user_agent)
   mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
   //mainWindow.webContents.openDevTools()
@@ -22,13 +25,12 @@ function createWindow () {
   mainWindow.once('ready-to-show',() => {
    mainWindow.webContents.session.clearStorageData({storages: ["serviceworkers"]}).then( async ()=>{
      //console.log("inside")
-     await mainWindow.webContents.reload()
+     mainWindow.webContents.reload()
      mainWindow.show()
    })
  })
  mainWindow.show()
 }
-
 let flag = true;
 let menu
 let templ = 
@@ -45,6 +47,16 @@ let templ =
       label: 'Quit',
       accelerator: 'CmdOrCtrl+W',
       role: 'quit'
+    },
+    {
+      label: 'Minimize',
+      accelerator: 'CmdOrCtrl+Q',
+      role: 'minimize'
+    },
+    {
+      label: 'Open Developer Tools',
+      accelerator: 'CmdOrCtrl+Shift+I',
+      role: 'toggleDevTools'
     }
   ]
   }
@@ -54,7 +66,10 @@ app.whenReady().then(() => {
   createWindow()
   const menu = Menu.buildFromTemplate(templ)
     Menu.setApplicationMenu(menu)
-  globalShortcut.register('CommandOrControl+Q', () => {
+  /*globalShortcut.register('CmdOrCtrl+Q',()=>{
+    mainWindow.minimize()
+  })*/
+  globalShortcut.register('CommandOrControl+Shift+Q', () => {
     if(!flag)
     {
       flag=true;

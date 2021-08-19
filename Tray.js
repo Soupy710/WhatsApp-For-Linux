@@ -1,27 +1,28 @@
-const {Tray, shell,Menu, ipcMain} = require('electron')
+const {Tray, shell,Menu} = require('electron')
 class TraySettings
 {
-    constructor(path_name,mainWindow)
+    constructor(path_name,mainWindow,app)
     {
         this.window = mainWindow
+        this.app = app
         this.path_name = path_name;
         console.log('Tray instance created!')
+        this.tray = new Tray(this.path_name)
     }
     initialize()
     {
-        let tray = new Tray(this.path_name)
-        tray.setToolTip('WhatsApp')
+        this.tray.setToolTip('WhatsApp')
+        this.tray.setTitle('WhatsApp')
         let temp = [
         {
             label: 'Quit WhatsApp',click: ()=>{
-                this.window.close()
-                tray.setContextMenu(contextmenu)
+                this.window.destroy()
             }
         },
         {
             label: 'Show Window',click: ()=>{
                 this.window.show()
-                tray.setContextMenu(contextmenu)
+                this.tray.setContextMenu(contextmenu)
             }
         },
         {
@@ -35,7 +36,7 @@ class TraySettings
         }
        ]
         const contextmenu = Menu.buildFromTemplate(temp)
-        tray.setContextMenu(contextmenu)
+        this.tray.setContextMenu(contextmenu)
     }
 }
 module.exports = TraySettings

@@ -1,8 +1,15 @@
-window.addEventListener('load', () => {
-    //The below code is when frame is disabled
-    /*element = document.getElementsByTagName("body")
-    let ele = document.createElement("div")
-    ele.setAttribute("style","width: 100%;height:2.5%; -webkit-app-region: drag; position: absolute")
-    element[0].insertBefore(ele,element[0].childNodes[0])*/
-    //console.log(element)
-})
+const {ipcRenderer} = require("electron")
+window.oldNotification = Notification;
+window.Notification = function (title, options) {
+	console.log("sad")
+	//if(settings.get('notification.enabled.value')) {
+		const n = new window.oldNotification(title, options);
+		//console.log(title,options)
+		n.addEventListener('click', function () {
+			ipcRenderer.send('showWindow');
+		});
+		return n;
+	//}
+};
+//console.log("hellow wo")
+Object.assign(window.Notification, window.oldNotification);

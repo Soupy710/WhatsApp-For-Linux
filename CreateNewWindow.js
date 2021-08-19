@@ -1,12 +1,14 @@
 const {app, BrowserWindow, Tray, shell} = require('electron')
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 const { Client } = require('whatsapp-web-electron.js');
 const pie = require("puppeteer-in-electron")
 const puppeteer = require("puppeteer-core");
 const path = require('path')
+const TraySettings = require('./Tray')
 let packageInfo = require('./package.json');
-let browser1,user_agent
+let browser1
 async function createWindow () {
-    browser1 = await pie.connect(app,puppeteer);
     let mainWindow = new BrowserWindow({
       show: false,
       icon: path.join(__dirname,'assets/icons/64x64.png'),
@@ -16,31 +18,42 @@ async function createWindow () {
       autoHideMenuBar: true,
       //frame:false,
       webPreferences: {
-        preload: path.join(__dirname,'preload.js'),
-        enableRemoteModule: true
+        enableRemoteModule: false,
+				preload: path.join(__dirname, '/preload.js')
       }
     })
-    user_agent = mainWindow.webContents.session.getUserAgent().replace(`WhatsAppDesktop/${packageInfo.version} `,"").replace(`Electron/${packageInfo.devDependencies.electron} `,"")
-    app.userAgentFallback = user_agent
-    //console.log(user_agent)
-    await mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
-
-    /*mainWindow.once('ready-to-show',() => {
-     mainWindow.webContents.session.clearStorageData({storages: ["serviceworkers"]}).then( async ()=>{
-       mainWindow.webContents.reload()
-     }).catch(()=>{console.log("Could not clear the data")})*/
-     
+    const tray = new TraySettings(path.join(__dirname,'assets/icons/whatsapp.png'),mainWindow,app)
+    tray.initialize()
+    const user_agent = mainWindow.webContents.session.getUserAgent().replace(`WhatsAppDesktop/${packageInfo.version} `,"").replace(`Electron/${packageInfo.devDependencies.electron} `,"")
+    console.log(user_agent)
+    mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
+    browser1 = await pie.connect(app,puppeteer);
+    let whatsapp =new Client(browser1,mainWindow,{userAgent: user_agent,qrTimeoutMs: 0});
+    whatsapp.on('ready', () => {
+          console.log('Whatsapp client ready');
+    });
+    whatsapp.on('message',async (msg)=>{
+      console.log(msg.body)
+      if(msg.body=='Hey')
+      {
+        msg.getChat().then(async (chat)=>{
+          msg.reply('Hello')
+        })
+      }
+    });
+    whatsapp.initialize()
+    mainWindow.on('close',(e)=>{
+        e.preventDefault()
+        mainWindow.hide()
+    })
+    mainWindow.once('ready-to-show',() => {
+     mainWindow.webContents.session.clearStorageData({storages: ["serviceworkers"]})
+     })
      mainWindow.webContents.on('new-window', function(e, url) {
       e.preventDefault();
       shell.openExternal(url);
     });
-    /*mainWindow.on('close',(e)=>{
-      console.log("not closing") 
-      e.preventDefault()
-    })*/
    mainWindow.show()
-   let page1 = await pie.getPage(browser1, mainWindow);
-  page1.on('error',(err)=>{console.log("eerrre")})
-   return {mainWindow,user_agent,browser1,page1}  
-  }
+   return {mainWindow,user_agent,browser1}  
+}
 module.exports = createWindow;

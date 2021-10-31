@@ -5,27 +5,38 @@
   "main": "main.js",
   "homepage": "http://www.github,com/Soupy710",
   "description": "An electron based whatsapp desktop application for linux",
+  "email": "swaroopbhat710@gmail.com",
   "scripts": {
     "start": "electron .",
     "package-linux": "electron-packager . whatsapp-desktop-for-linux --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/512x512.png --prune=true --out=release-builds",
     "create-debian-installer": "electron-installer-debian --src release-builds/whatsapp-desktop-for-linux-linux-x64/ --arch amd64 --config debian.json",
-    "dev": "nodemon --watch . --exec 'electron . --debug'"
+    "dev": "nodemon --watch . --exec 'electron . --debug'",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Soupy710/WhatsApp-For-Desktop.git"
   },
-  "author": "Swaroop Bhat",
+  "author": "Swaroop Bhat <swaroopbhat710@gmail.com>",
   "dependencies": {
-    "puppeteer-core": "^9.1.1",
-    "puppeteer-in-electron": "^3.0.3"
+    "whatsapp-web-electron.js": "^1.14.1-3"
   },
   "devDependencies": {
     "electron": "^15.3.0",
+    "electron-builder": "^22.13.1",
     "electron-packager": "^15.2.0",
     "puppeteer-core": "^9.1.1",
-    "puppeteer-in-electron": "^3.0.3",
+    "puppeteer-in-electron": "^3.0.5",
     "whatsapp-web-electron.js": "^1.14.1-3"
+  },
+  "build": {
+    "appId": "com.whatsappun.app",
+    "linux": {
+      "category": "social media",
+      "target": "pacman",
+      "icon": "./assets/icons/256x256.png"
+    }
   },
   "bugs": {
     "url": "https://github.com/Soupy710/WhatsApp-For-Desktop/issues"

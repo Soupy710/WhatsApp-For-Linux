@@ -19,6 +19,7 @@ async function createWindow () {
       //frame:false,
       webPreferences: {
         enableRemoteModule: false,
+        nodeIntegration: true,
 				preload: path.join(__dirname, '/preload.js')
       }
     })
@@ -29,17 +30,12 @@ async function createWindow () {
     mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
     browser1 = await pie.connect(app,puppeteer);
     let whatsapp =new Client(browser1,mainWindow,{userAgent: user_agent,qrTimeoutMs: 0});
-    ipcMain.on('loaded',(event)=>{
-      
       console.log(whatsapp)
       console.log('finally')
       whatsapp.on('ready', () => {
             console.log('Whatsapp client ready');
-            ipcMain.emit('whatsup')
+            mainWindow.webContents.send('whatsapp_ready')
       });
-      event.sender.send('whatsapp_ready')
-      
-    })
     whatsapp.initialize()
     /*whatsapp.on('message',async (msg)=>{
       console.log(msg.body)

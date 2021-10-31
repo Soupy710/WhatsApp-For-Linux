@@ -87,7 +87,9 @@ app.on('activate', function () {
 
 
 ipcMain.addListener('showWindow',(event)=>{
-  BrowserWindow.getAllWindows()[0].show()
+  window = BrowserWindow.getAllWindows()[0]
+  if(!window.isVisible()) window.show()
+  window.focus()
   console.log("in")
 })  
 

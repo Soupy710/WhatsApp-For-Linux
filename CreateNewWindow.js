@@ -29,7 +29,7 @@ async function createWindow () {
     mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
     browser1 = await pie.connect(app,puppeteer);
     let whatsapp =new Client(browser1,mainWindow,{userAgent: user_agent,qrTimeoutMs: 0});
-    whatsapp.on('ready', () => {
+    /*whatsapp.on('ready', () => {
           console.log('Whatsapp client ready');
     });
     whatsapp.on('message',async (msg)=>{
@@ -40,7 +40,7 @@ async function createWindow () {
           msg.reply('Hello')
         })
       }
-    });
+    });*/
     whatsapp.initialize()
     mainWindow.on('close',(e)=>{
         e.preventDefault()

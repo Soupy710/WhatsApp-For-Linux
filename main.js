@@ -61,7 +61,7 @@ async function mynewfun() {
     flag1=1
     console.log('CommandOrControl+R is pressed')
     app.emit('reload1')
-    mainWindow.close()
+    //mainWindow.close()
   })
    //console.log(msg.location)
    /*msg.getContact().then((con)=>{
@@ -95,7 +95,12 @@ ipcMain.addListener('showWindow',(event)=>{
 app.on('ready',()=>{
   mynewfun()})
 
-app.on('reload1',()=>{
+app.on('reload1',async ()=>{
   console.log("dfsd")
   app.relaunch()
+  app.on('ready',()=>{
+    ipcMain.emit('showWindow')
+    console.log("asdas")
+  })
+  
 })

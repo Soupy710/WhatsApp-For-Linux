@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Tray, shell} = require('electron')
+const {app, BrowserWindow, Tray, shell, ipcMain} = require('electron')
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 const { Client } = require('whatsapp-web-electron.js');
@@ -22,17 +22,26 @@ async function createWindow () {
 				preload: path.join(__dirname, '/preload.js')
       }
     })
-    const tray = new TraySettings(path.join(__dirname,'assets/icons/whatsapp.png'),mainWindow,app)
+    const tray = new TraySettings(path.join(__dirname,'assets/icons/256x256.png'),mainWindow,app)
     tray.initialize()
     const user_agent = mainWindow.webContents.session.getUserAgent().replace(`WhatsAppDesktop/${packageInfo.version} `,"").replace(`Electron/${packageInfo.devDependencies.electron} `,"")
     console.log(user_agent)
     mainWindow.loadURL('https://web.whatsapp.com',{userAgent: user_agent})
     browser1 = await pie.connect(app,puppeteer);
     let whatsapp =new Client(browser1,mainWindow,{userAgent: user_agent,qrTimeoutMs: 0});
-    /*whatsapp.on('ready', () => {
-          console.log('Whatsapp client ready');
-    });
-    whatsapp.on('message',async (msg)=>{
+    ipcMain.on('loaded',(event)=>{
+      
+      console.log(whatsapp)
+      console.log('finally')
+      whatsapp.on('ready', () => {
+            console.log('Whatsapp client ready');
+            ipcMain.emit('whatsup')
+      });
+      event.sender.send('whatsapp_ready')
+      
+    })
+    whatsapp.initialize()
+    /*whatsapp.on('message',async (msg)=>{
       console.log(msg.body)
       if(msg.body=='Hey')
       {
@@ -41,7 +50,7 @@ async function createWindow () {
         })
       }
     });*/
-    whatsapp.initialize()
+
     mainWindow.on('close',(e)=>{
         e.preventDefault()
         mainWindow.hide()

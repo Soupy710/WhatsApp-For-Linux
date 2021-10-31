@@ -1,6 +1,14 @@
-const {ipcRenderer} = require("electron")
-window.oldNotification = Notification;
-window.Notification = function (title, options) {
+const {ipcRenderer, Renderer} = require("electron")
+ipcRenderer.sendSync('loaded', 'sync ping')
+ipcRenderer.on('whatsapp_ready',()=>{
+	// console.log('hello woedddddd')
+	// x = document
+	// console.log(x)
+	// console.log(x[0])
+	// document.head.append('<script src="./Renderer.js">')
+	console.log('as')
+	window.oldNotification = Notification;
+	window.Notification = function (title, options) {
 	console.log("sad")
 	//if(settings.get('notification.enabled.value')) {
 		const n = new window.oldNotification(title, options);
@@ -10,6 +18,8 @@ window.Notification = function (title, options) {
 		});
 		return n;
 	//}
+	
 };
-//console.log("hellow wo")
 Object.assign(window.Notification, window.oldNotification);
+})
+//console.log("hellow wo")

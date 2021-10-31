@@ -17,17 +17,15 @@
   },
   "author": "Swaroop Bhat",
   "dependencies": {
-    "electron": "^11.4.7",
     "puppeteer-core": "^9.1.1",
-    "puppeteer-in-electron": "^3.0.3",
-    "whatsapp-web-electron.js": "^1.12.6"
+    "puppeteer-in-electron": "^3.0.3"
   },
   "devDependencies": {
-    "electron": "11.4.8",
+    "electron": "^15.3.0",
     "electron-packager": "^15.2.0",
     "puppeteer-core": "^9.1.1",
     "puppeteer-in-electron": "^3.0.3",
-    "whatsapp-web-electron.js": "^1.12.6"
+    "whatsapp-web-electron.js": "^1.14.1-3"
   },
   "bugs": {
     "url": "https://github.com/Soupy710/WhatsApp-For-Desktop/issues"

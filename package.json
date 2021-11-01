@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "homepage": "http://www.github,com/Soupy710",
-  "description": "An electron based whatsapp desktop application for linux",
+  "description": "An electronjs based whatsapp desktop application for linux(deb and arch users)",
   "email": "swaroopbhat710@gmail.com",
   "scripts": {
     "start": "electron .",
@@ -16,12 +16,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Soupy710/WhatsApp-For-Desktop.git"
+    "url": "https://github.com/Soupy710/WhatsApp-For-Desktop.git"
   },
   "author": "Swaroop Bhat <swaroopbhat710@gmail.com>",
-  "dependencies": {
-    "whatsapp-web-electron.js": "^1.14.1-3"
-  },
   "devDependencies": {
     "electron": "^15.3.0",
     "electron-builder": "^22.13.1",
@@ -32,11 +29,11 @@
     "whatsapp-web-electron.js": "^1.14.1-3"
   },
   "build": {
-    "appId": "com.whatsappun.app",
+    "appId": "com.whatsappunofficial.app",
     "linux": {
       "category": "social media",
       "target": "pacman",
-      "icon": "./assets/icons/256x256.png"
+      "icon": "./assets/icons/512x512.png"
     }
   },
   "bugs": {

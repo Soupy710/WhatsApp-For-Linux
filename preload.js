@@ -1,22 +1,19 @@
 const {ipcRenderer} = require("electron")
+
 ipcRenderer.on('whatsapp_ready',()=>{
 
-	console.log('as')
 	oldnotif = Notification;
 	window.Notification = function (title, options) {
-	console.log("sad")
-	const n = new oldnotif(title, options);
+		const n = new oldnotif(title, options);
 		console.log(title,options)
 		n.addEventListener('click', function () {
 			ipcRenderer.send('showWindow');
 		});
 		return n;
-};
-workar = window.document.getElementsByClassName('_2XcXo')[0]
-if(workar)
-{
-	window.document.getElementsByClassName('_2XcXo')[0].remove()	
-}
-console.log(workar)
+	};
+
+	workar = window.document.getElementsByClassName('_2XcXo')[0]
+	if(workar) window.document.getElementsByClassName('_2XcXo')[0].remove()	
+
+	console.log('WhatsApp notifications configured')
 })
-console.log("hellow wo")

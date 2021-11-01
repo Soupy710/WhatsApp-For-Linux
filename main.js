@@ -4,21 +4,27 @@ const { Client } = require('whatsapp-web-electron.js');
 const pie = require("puppeteer-in-electron")
 const path = require('path')
 const { autoUpdater } = require("electron-updater");
-autoUpdater.checkForUpdatesAndNotify();
 const createNewWindow = require('./CreateNewWindow');
+
+autoUpdater.checkForUpdatesAndNotify();
 pie.initialize(app);
+
+
 let mainWindow=null,user_agent,whatsapp,page1,check
+
+//Only one instance of whatsapp can run at once
 const gotTheLock = app.requestSingleInstanceLock()
 if(gotTheLock){
   app.on('second-instance',()=>{
     if(mainWindow){
-      console.log('gotcha!')
       mainWindow.show()
     }
   })
 }
 else app.quit()
 
+
+//defines the menu template
 let templ = 
 [
   {
@@ -42,6 +48,7 @@ let templ =
       label: 'Quit',
       accelerator: 'CmdOrCtrl+W',
       click: ()=>{
+        console.log('Quitting WhatsApp...')
         app.quit()
       }
     }
@@ -49,35 +56,24 @@ let templ =
   }
 ]
 let menu = Menu.buildFromTemplate(templ);
-let flag1
-async function mynewfun() {
-  flag1 = 0
+
+
+
+async function myNewFun() {
   const menu = Menu.buildFromTemplate(templ)
   Menu.setApplicationMenu(menu)
+
+
   let obj= await createNewWindow()
   mainWindow = obj.mainWindow
   let browser1 = obj.browser1
   user_agent = obj.user_agent
-  console.log(mainWindow)
+
+
   globalShortcut.register('CommandOrControl+Shift+R', async function() {
-    flag1=1
-    console.log('CommandOrControl+R is pressed')
+    console.log('CommandOrControl+R was pressed')
     app.emit('reload1')
-    // mainWindow.reload()
-    // mainWindow.close()
-    // mainWindow.show()
-    // await new Promise(r => setTimeout(r, 2000));
-    // mainWindow.show()
   })
-   //console.log(msg.location)
-   /*msg.getContact().then((con)=>{
-     console.log(con)
-   })
-   msg.getChat().then((chat)=>{
-     console.log(chat)
-   })
-});*/
-//temp.show()
   //BrowserWindow.getAllWindows()[0].webContents.session.clearStorageData()
 }
 
@@ -91,26 +87,21 @@ app.on('activate', function () {
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
 
+app.on('ready',()=>{
+  myNewFun()
+})
+
+app.on('reload1',async ()=>{
+  console.log('Reloading the app')
+  app.relaunch()
+  app.exit()
+})
+
+
 
 ipcMain.addListener('showWindow',(event)=>{
   window = BrowserWindow.getAllWindows()[0]
   if(!window.isVisible()) window.show()
   window.focus()
-  console.log("in")
+  //console.log("in")
 })  
-
-ipcMain.addListener('clicked_it',(e)=>{
-  e.preventDefault()
-  console.log("inside")
-})
-
-app.on('ready',()=>{
-  mynewfun()})
-
-app.on('reload1',async ()=>{
-  console.log("dfsd")
-  // BrowserWindow.getAllWindows()[0].reload()
-  // ipcMain.emit('showWindow')
-  app.relaunch()
-  app.exit()
-})

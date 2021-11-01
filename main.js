@@ -3,10 +3,10 @@ const Notifiers = require('./notifier.js')
 const { Client } = require('whatsapp-web-electron.js');
 const pie = require("puppeteer-in-electron")
 const path = require('path')
-const { autoUpdater } = require("electron-updater");
+//const { autoUpdater } = require("electron-updater");
 const createNewWindow = require('./CreateNewWindow');
 
-autoUpdater.checkForUpdatesAndNotify();
+//autoUpdater.checkForUpdatesAndNotify();
 pie.initialize(app);
 
 

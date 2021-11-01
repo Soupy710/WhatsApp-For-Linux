@@ -20,7 +20,8 @@ async function createWindow () {
       webPreferences: {
         enableRemoteModule: false,
         nodeIntegration: true,
-				preload: path.join(__dirname, '/preload.js')
+				preload: path.join(__dirname, '/preload.js'),
+        contextIsolation: false
       }
     })
     const tray = new TraySettings(path.join(__dirname,'assets/icons/256x256.png'),mainWindow,app)

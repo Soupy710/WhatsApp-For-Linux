@@ -3,6 +3,8 @@ const Notifiers = require('./notifier.js')
 const { Client } = require('whatsapp-web-electron.js');
 const pie = require("puppeteer-in-electron")
 const path = require('path')
+const { autoUpdater } = require("electron-updater");
+autoUpdater.checkForUpdatesAndNotify();
 const createNewWindow = require('./CreateNewWindow');
 pie.initialize(app);
 let mainWindow=null,user_agent,whatsapp,page1,check
@@ -61,7 +63,11 @@ async function mynewfun() {
     flag1=1
     console.log('CommandOrControl+R is pressed')
     app.emit('reload1')
-    //mainWindow.close()
+    // mainWindow.reload()
+    // mainWindow.close()
+    // mainWindow.show()
+    // await new Promise(r => setTimeout(r, 2000));
+    // mainWindow.show()
   })
    //console.log(msg.location)
    /*msg.getContact().then((con)=>{
@@ -93,16 +99,18 @@ ipcMain.addListener('showWindow',(event)=>{
   console.log("in")
 })  
 
+ipcMain.addListener('clicked_it',(e)=>{
+  e.preventDefault()
+  console.log("inside")
+})
 
 app.on('ready',()=>{
   mynewfun()})
 
 app.on('reload1',async ()=>{
   console.log("dfsd")
+  // BrowserWindow.getAllWindows()[0].reload()
+  // ipcMain.emit('showWindow')
   app.relaunch()
-  app.on('ready',()=>{
-    ipcMain.emit('showWindow')
-    console.log("asdas")
-  })
-  
+  app.exit()
 })

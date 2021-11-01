@@ -1,7 +1,7 @@
 {
   "name": "whatsapp-desktop-for-linux",
   "productName": "WhatsApp Desktop",
-  "version": "1.0.0",
+  "version": "2.0",
   "main": "main.js",
   "homepage": "http://www.github,com/Soupy710",
   "description": "An electronjs based whatsapp desktop application for linux(deb and arch users)",

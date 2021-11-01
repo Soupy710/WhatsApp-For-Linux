@@ -16,12 +16,28 @@
   },
   "repository": {
     "type": "git",
+<<<<<<< HEAD
     "url": "https://github.com/Soupy710/WhatsApp-For-Desktop.git"
+=======
+    "url": "git+https://github.com/Soupy710/WhatsApp-For-Desktop.git"
+  },
+  "author": "Swaroop Bhat",
+  "dependencies": {
+    "electron": "^11.4.7",
+    "electron-installer-debian": "^3.1.0",
+    "puppeteer-core": "^9.1.1",
+    "puppeteer-in-electron": "^3.0.3",
+    "whatsapp-web-electron.js": "^1.12.6"
+>>>>>>> master
   },
   "author": "Swaroop Bhat <swaroopbhat710@gmail.com>",
   "devDependencies": {
+<<<<<<< HEAD
     "electron": "^15.3.0",
     "electron-builder": "^22.13.1",
+=======
+    "electron": "11.4.7",
+>>>>>>> master
     "electron-packager": "^15.2.0",
     "electron-updater": "^4.3.9",
     "puppeteer-core": "^9.1.1",

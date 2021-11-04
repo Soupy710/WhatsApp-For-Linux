@@ -14,6 +14,6 @@ ipcRenderer.on('whatsapp_ready',()=>{
 
 	workar = window.document.getElementsByClassName('_2XcXo')[0]
 	if(workar) window.document.getElementsByClassName('_2XcXo')[0].remove()	
-
+	Object.assign(window.Notification,oldnotif)
 	console.log('WhatsApp notifications configured')
 })

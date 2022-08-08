@@ -1,13 +1,10 @@
 const {Tray, shell,Menu} = require('electron')
 class TraySettings
 {
-    constructor(path_name,mainWindow,app)
+    constructor(path_name,mainWindow)
     {
         this.window = mainWindow
-        this.app = app
-        this.path_name = path_name;
-        console.log('Tray instance created!')
-        this.tray = new Tray(this.path_name)
+        this.tray = new Tray(path_name)
     }
     initialize()
     {
